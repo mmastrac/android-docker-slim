@@ -21,6 +21,7 @@ COPY --from=0 /lib64 /lib64
 COPY --from=0 /sbin /sbin
 COPY --from=0 /sys /sys
 COPY --from=0 /usr /usr
+COPY --from=0 /root/.gradle /root/.gradle  # Note: only the gradle wrapper stuff we built
 
 ENV ANDROID_HOME /opt/android-sdk-linux
 ENV ANDROID_NDK_HOME /opt/android-ndk
