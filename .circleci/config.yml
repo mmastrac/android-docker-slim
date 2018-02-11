@@ -18,4 +18,9 @@ jobs:
             mv /tmp/docker/* /usr/bin
       - run:
           name: Docker build
-          command: docker build .
+          command: docker build --rm --no-cache -t "$DOCKER_USER"/bitrise-android-ndk-trimmed .
+      - run:
+          name: Docker push
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push "$DOCKER_USER"/bitrise-android-ndk-trimmed
