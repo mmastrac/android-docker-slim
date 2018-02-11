@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run:
           name: Docker build
-          command: sudo docker build .
+          command: docker build .
