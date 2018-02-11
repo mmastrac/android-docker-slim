@@ -2,11 +2,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: golang:1.6.4   # (1)
+    working_directory: /go/src/github.com/CircleCI-Public/circleci-demo-docker
     steps:
       - checkout
-      # use a primary image that already has Docker (recommended)
-      # or install it during a build like we do here
+      - setup_remote_docker:   # (2)
+          docker_layer_caching: true # (3)
       - run:
           name: Install Docker client
           command: |
