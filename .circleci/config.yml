@@ -9,6 +9,9 @@ jobs:
       - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
       - run:
+          name: Build version
+          command: echo export BUILD_DATE=`date +"v%Y%m%d_%H%M%S"` >> $BASH_ENV
+      - run:
           name: Install Docker client
           command: |
             set -x
@@ -19,12 +22,13 @@ jobs:
       - run:
           name: Docker build
           command: |
-            export BUILD_DATE=`date +"v%Y%m%d_%H%M%S"`
+            echo "Building tag $BUILD_DATE..."
             docker build --rm --no-cache -t "$DOCKER_USER"/bitrise-android-ndk-trimmed .
             docker tag "$DOCKER_USER"/bitrise-android-ndk-trimmed "$DOCKER_USER"/bitrise-android-ndk-trimmed:"$BUILD_DATE"
       - run:
           name: Docker push
           command: |
+            echo "Pushing tag $BUILD_DATE..."
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push "$DOCKER_USER"/bitrise-android-ndk-trimmed
             docker push "$DOCKER_USER"/bitrise-android-ndk-trimmed:"$BUILD_DATE"
