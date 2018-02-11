@@ -18,9 +18,13 @@ jobs:
             mv /tmp/docker/* /usr/bin
       - run:
           name: Docker build
-          command: docker build --rm --no-cache -t "$DOCKER_USER"/bitrise-android-ndk-trimmed:`date +"v%Y%m%d_%H%M%S"` .
+          command: |
+            export BUILD_DATE=`date +"v%Y%m%d_%H%M%S"`
+            docker build --rm --no-cache -t "$DOCKER_USER"/bitrise-android-ndk-trimmed .
+            docker tag "$DOCKER_USER"/bitrise-android-ndk-trimmed "$DOCKER_USER"/bitrise-android-ndk-trimmed:"$BUILD_DATE"
       - run:
           name: Docker push
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push "$DOCKER_USER"/bitrise-android-ndk-trimmed
+            docker push "$DOCKER_USER"/bitrise-android-ndk-trimmed:"$BUILD_DATE"
